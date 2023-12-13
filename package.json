@@ -1,7 +1,6 @@
 {
   "name": "react-web-pack",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -34,5 +33,14 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anhngo0/employeeManagement.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anhngo0/employeeManagement/issues"
+  },
+  "homepage": "https://github.com/anhngo0/employeeManagement#readme",
+  "description": ""
 }

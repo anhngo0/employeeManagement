@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import EmployeeService from '../service/EmployeeService';
-import { useNavigate, BrowserRouter } from 'react-router-dom';
+import withRouter from '../WithRouter';
 class ListEmployeeComponent extends Component{
 
     constructor(props) {
@@ -9,16 +9,31 @@ class ListEmployeeComponent extends Component{
             employees: []
         };
         this.addEmployee = this.addEmployee.bind(this);
+        this.editEmployee = this.editEmployee.bind(this)
+        this.deleteEmployee = this.deleteEmployee.bind(this)
     }
-// TODO: ADD @CrossOrigin(origins = "http://locahost:8080" to EmployeeController)
     componentDidMount(){
         EmployeeService.getEmployee().then(response => {
-            this.setState({employee : response.data})
+            this.setState({employees : response.data})
         })
     }
 
     addEmployee(){
-        useNavigate()('/add-employee')
+        const {navigate} = this.props;
+        navigate('/add-employee')
+    }
+
+    editEmployee(id){
+        const {navigate} = this.props;
+        navigate(`/update-employee/${id}`)
+    }
+
+    deleteEmployee(id){
+        EmployeeService.deleteEmployee(id).then(res =>{
+            this.setState({
+                employees:this.state.employees.filter(employee => employee.id != id)
+            });
+        });
     }
 
     render() {
@@ -45,6 +60,10 @@ class ListEmployeeComponent extends Component{
                                 <td>{employee.firstname}</td>
                                 <td>{employee.lastname}</td>
                                 <td>{employee.email}</td>
+                                <td>
+                                    <button className="btn btn-info" onClick={() => this.editEmployee(employee.id)}>Update</button>
+                                    <button className='btn btn-danger' style={{marginLeft:'15px'}} onClick={() => this.deleteEmployee(employee.id)}>Delete</button>
+                                </td>
                             </tr>
                         )}
                     </tbody>
@@ -55,4 +74,4 @@ class ListEmployeeComponent extends Component{
     }
 }
 
-export default ListEmployeeComponent;
+export default withRouter(ListEmployeeComponent);

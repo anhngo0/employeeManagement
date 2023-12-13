@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import { useParams } from 'react-router-dom';
 import withRouter from '../WithRouter';
 import EmployeeService from '../service/EmployeeService';
 
-class CreateEmployeeComponent extends Component {
+class UpdateEmployeeComponent extends Component {
     constructor(props){
         super(props)
+        const { employeeId } = props;
         this.state = {
+            id: employeeId,
             firstname:'',
             lastname:'',
             email:''
@@ -15,10 +18,21 @@ class CreateEmployeeComponent extends Component {
         this.changeFirstNameHandler = this.changeFirstNameHandler.bind(this)
         this.changeLastNameHandler = this.changeLastNameHandler.bind(this)
         this.changeEmailHandler = this.changeEmailHandler.bind(this)
-        this.saveEmployee = this.saveEmployee.bind(this)
+        this.updateEmployee = this.updateEmployee.bind(this)
     }
     
-    saveEmployee = (e) => {
+    componentDidMount(){
+        EmployeeService.getEmployeeById(this.state.id).then(res => {
+            let employee = res.data;
+            this.setState({
+                firstname: employee.firstname,
+                lastname: employee.lastname,
+                email:employee.email
+            }
+            )
+        })
+    }
+    updateEmployee = (e) => {
         e.preventDefault();
         let employee = {
             firstname: this.state.firstname,
@@ -27,7 +41,7 @@ class CreateEmployeeComponent extends Component {
         };
         console.log('employee =>' + JSON.stringify(employee));
         
-        EmployeeService.createEmployee(employee).then(res => {
+        EmployeeService.updateEmployeeInfo(employee, this.state.id).then(res => {
             const { navigate }= this.props;
             navigate('/employees');
         })
@@ -58,10 +72,10 @@ class CreateEmployeeComponent extends Component {
             <div className='container'>
                 <div className="row">
                     <div className="card col-md-6 offset-md-3 offset-md-3">
-                        <h3 className="text-center">Add Employee</h3>
+                        <h3 className="text-center">Update Employee</h3>
                         <div className="card-body">
                             {/* Form post employee */}
-                            <form action="POST">
+                            <form action="PUT">
                                 <div className="form-group">
                                     <label>First Name:</label>
                                     <input type="text" placeholder='first name' name='firstname'
@@ -78,7 +92,7 @@ class CreateEmployeeComponent extends Component {
                                     value={this.state.email} onChange={this.changeEmailHandler} className="form-control" />
                                 </div>
 
-                                <button className='btn btn-success' onClick={this.saveEmployee}>Save</button>
+                                <button className='btn btn-success' onClick={this.updateEmployee}>Save</button>
                                 <button className='btn btn-danger' onClick={this.cancel.bind(this)} style={{marginLeft:"10px"}}>Cancel</button>
                             </form>
                         </div>
@@ -89,4 +103,4 @@ class CreateEmployeeComponent extends Component {
     }
 }
 
-export default withRouter(CreateEmployeeComponent);
+export default withRouter(UpdateEmployeeComponent);
