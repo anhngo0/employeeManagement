@@ -9,12 +9,11 @@ class HeaderComponent extends Component{
     render() {
         return (
             <div>
-                <header>
-                    <div className="navbar navbar-expand-md navbar-dark">
-                        <div><a href="#" className='navbar-brand'>Employee Management App</a></div>
-                    </div>
-                </header>
-            </div>
+                <nav className="navbar navbar-expand-lg navbar-light" style={{backgroundColor:"rgba(142, 68, 173,1.0)"}}>
+                <a className="navbar-brand" style={{color:"#fff"}}href="#">Navbar</a>
+                <button className='btn btn-info'>Log In</button>
+                </nav>
+          </div>
         ) 
     }
 }

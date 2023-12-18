@@ -10,7 +10,7 @@ class FooterComponent extends Component{
         return (
             <div>
                <footer>
-                <span className='text-muted'> ALl rights reserved</span>
+                <span className='text-muted row' style={{marginTop:"15px", textAlign:"center"}}> Course Management Website</span>
                </footer>
             </div>
         ) 
